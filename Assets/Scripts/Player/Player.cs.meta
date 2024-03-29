@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 8f4ce7753f7d580429d776cd4ba25c5b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - <PhysicsSettings>k__BackingField: {fileID: 11400000, guid: da7fec4dc1764344b87e426f0abba840, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b50263c59953e3c47b7fc0859a064992, type: 3}
+  m_Name: PhysicsSettingsDefault
+  m_EditorClassIdentifier: 
+  <InitialForwardVelocity>k__BackingField: 7
+  <Gravity>k__BackingField: 16
+  <HopVelocity>k__BackingField: 12
+  <DiveVelocity>k__BackingField: 12
