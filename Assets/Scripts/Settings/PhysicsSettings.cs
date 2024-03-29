@@ -2,7 +2,7 @@ namespace Settings
 {
 	using UnityEngine;
 
-	[CreateAssetMenu(fileName = "Physics", menuName = "ScriptableObjects/Physics", order = 1)]
+	[CreateAssetMenu(fileName = "PhysicsSettings", menuName = "ScriptableObjects/PhysicsSettings", order = 1)]
 	public class PhysicsSettings : ScriptableObject
 	{
 		[field: SerializeField] public float ForwardVelocity { get; private set; } = 7f;

@@ -43,19 +43,16 @@ namespace Player
 
 		private void Hop()
 		{
-			// Apply the progression factor to hopping only after the initial platforms.
-			var hopsAfterWarmup = Mathf.Max(0, GameManager.Instance.Score - PlatformManager.PlatformsCount);
-			
-			var hopVelocity = _physics.HopVelocity * ProgressionMultipliers.VerticalVelocity(hopsAfterWarmup);
+			// Apply the progression factor to hopping.
+			var hopVelocity = _physics.HopVelocity * _progression.VerticalVelocity(GameManager.Instance.Score);
 			_player.LocalVelocity = _player.LocalVelocity.With(y: hopVelocity);
 		}
 
 		private void TryDive(InputAction.CallbackContext _)
 		{
-			// Apply the progression factor before the next check, but only after the initial platforms.
-			var hopsAfterWarmup = Mathf.Max(0, GameManager.Instance.Score - PlatformManager.PlatformsCount);
-			var diveVelocity = _physics.DiveVelocity * ProgressionMultipliers.VerticalVelocity(hopsAfterWarmup);
-			var hopVelocity = _physics.HopVelocity * ProgressionMultipliers.VerticalVelocity(hopsAfterWarmup);
+			// Apply the progression factors.
+			var diveVelocity = _physics.DiveVelocity * _progression.VerticalVelocity(GameManager.Instance.Score);
+			var hopVelocity = _physics.HopVelocity * _progression.VerticalVelocity(GameManager.Instance.Score);
 			
 			// Make sure the player has not just hopped or already dived.
 			if (_player.LocalVelocity.y.IsBetween(-diveVelocity, hopVelocity * .9f)) 
