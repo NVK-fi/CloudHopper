@@ -10,7 +10,6 @@ namespace Platforms
 	public class PlatformManager : MonoBehaviour
 	{
 		[SerializeField] private Platform furthestPlatform;
-		[SerializeField] private float initialRandomness = 1f;
 
 		private ProgressionSettings _progression;
 		private PhysicsSettings _physics;
@@ -35,21 +34,24 @@ namespace Platforms
 
 		private void OnPlatformTouched(Platform touchedPlatform)
 		{
-			MovePlatformFurther(touchedPlatform);
+			touchedPlatform.transform.position = NextPlatformPosition();
 			furthestPlatform = touchedPlatform;
 		}
-
-		private void MovePlatformFurther(Platform platform)
-		{
-			platform.transform.position = CalculateNextPlatformPosition() + CalculateRandomOffset();
-		}
-
+		
 		/// <summary>
 		/// Calculates the position for the next platform from the current furthest platform.
 		/// The position is calculated using the forward and hopping velocities from the physics settings,
 		/// making it always possible to reach by player (in theory).
 		/// </summary>
-		private Vector3 CalculateNextPlatformPosition()
+		private Vector3 NextPlatformPosition()
+		{
+			var additionalDistance = Vector3.forward * MaxHopDistance() * .8f;
+			var randomizedPosition = Random.insideUnitSphere * MaxHopDistance() * .15f;
+			
+			return furthestPlatform.transform.position + additionalDistance + randomizedPosition;
+		}
+
+		private float MaxHopDistance()
 		{
 			// Calculate the forward and hopping velocities with progression factor.
 			var scoreWithOffset = GameManager.Instance.Score + _platformsCount - 1;
@@ -57,25 +59,8 @@ namespace Platforms
 			var hopVelocity = _physics.HopVelocity * _progression.VerticalVelocity(scoreWithOffset);
 
 			// The formula for maximum hop distance is "(2*f*h)/g", where f is forward velocity, h is hop velocity, and g is gravity.
-			// - Or so I hope, I'm still learning as I go.
-			var maxHopDistance = (2 * forwardVelocity * hopVelocity) / _physics.Gravity;
-			
-			print( "Score:" + GameManager.Instance.Score + " F:" + forwardVelocity + " H:" + hopVelocity + " = " + maxHopDistance);
-			
-			return furthestPlatform.transform.position + Vector3.forward * maxHopDistance;
+			// - Or so I hope, I'm learning stuff as I go.
+			return (2 * forwardVelocity * hopVelocity) / _physics.Gravity;
 		}
-
-		/// <summary>
-		/// Creates a random offset vector for the platform placement.
-		/// </summary>
-		private Vector3 CalculateRandomOffset()
-		{
-			var randomVector = Random.insideUnitSphere * initialRandomness * _progression.PlatformOffset(GameManager.Instance.Score);
-			var randomY = Mathf.Min(randomVector.y, 1f) * .1f;
-			var randomZ = Mathf.Min(randomVector.z, 0f) * .5f;
-			return new Vector3(randomVector.x, randomY, randomZ);
-		}
-
-		
 	}
 }

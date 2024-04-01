@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Player
 {
+	using System;
 	using Managers;
 	using Platforms;
 	using Settings;
@@ -11,6 +12,8 @@ namespace Player
 	[RequireComponent(typeof(Player))]
 	public class PlayerMoveVertical : MonoBehaviour
 	{
+		public event Action DivingStarted;
+		
 		private Player _player;
 		private ProgressionSettings _progression;
 		private PhysicsSettings _physics;
@@ -50,13 +53,15 @@ namespace Player
 
 		private void TryDive(InputAction.CallbackContext _)
 		{
-			// Apply the progression factors.
+			// Apply the progression factors to velocities.
 			var diveVelocity = _physics.DiveVelocity * _progression.VerticalVelocity(GameManager.Instance.Score);
 			var hopVelocity = _physics.HopVelocity * _progression.VerticalVelocity(GameManager.Instance.Score);
 			
-			// Make sure the player has not just hopped or already dived.
-			if (_player.LocalVelocity.y.IsBetween(-diveVelocity, hopVelocity * .9f)) 
-				_player.LocalVelocity = _player.LocalVelocity.With(y: -diveVelocity);
+			// Make sure the player has not just hopped or already is diving.
+			if (!_player.LocalVelocity.y.IsBetween(-diveVelocity, hopVelocity * .9f)) return;
+			
+			_player.LocalVelocity = _player.LocalVelocity.With(y: -diveVelocity);
+			DivingStarted?.Invoke();
 		}
 	}
 }

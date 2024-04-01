@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 624eb62af509df84184b479e11946d67, type: 3}
   m_Name: PhysicsSettingsDefault
   m_EditorClassIdentifier: 
-  <ForwardVelocity>k__BackingField: 7
-  <Gravity>k__BackingField: 16
-  <HopVelocity>k__BackingField: 12
-  <DiveVelocity>k__BackingField: 12
+  <ForwardVelocity>k__BackingField: 10
+  <Gravity>k__BackingField: 20
+  <HopVelocity>k__BackingField: 15
+  <DiveVelocity>k__BackingField: 15

@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c366f15cdccb22479ed1d6282ae2d4f, type: 3}
   m_Name: ProgressionSettingsDefault
   m_EditorClassIdentifier: 
-  playerForwardVelocityProgression: 0.1
-  playerVerticalVelocityProgression: 0.02
-  platformRandomOffsetProgression: 0.25
+  playerForwardVelocity: 0.03
+  playerVerticalVelocity: 0.01

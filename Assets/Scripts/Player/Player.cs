@@ -44,13 +44,12 @@ namespace Player
 		private void OnControllerColliderHit(ControllerColliderHit hit)
 		{
 			if (_isColliderCooldownActive) return;
+			
+			var platform = hit.gameObject.GetComponentInParent<Platform>();
+			if (platform == null) return;
 
-			var platform = hit.gameObject.GetComponent<Platform>();
-			if (platform != null)
-			{
-				StartCoroutine(ColliderCooldown());
-				PlatformTouched?.Invoke(platform);
-			}
+			StartCoroutine(ColliderCooldown());
+			PlatformTouched?.Invoke(platform);
 		}
 
 		/// <summary>

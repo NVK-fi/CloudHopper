@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Managers
 {
+	using System;
 	using Platforms;
 	using Player;
 	using Settings;
@@ -32,6 +33,11 @@ namespace Managers
 
 		private void OnDisable() => Player.Instance.PlatformTouched -= OnPlatformTouched;
 
-		private void OnPlatformTouched(Platform _) => Score++;
+		private void OnPlatformTouched(Platform _)
+		{
+			Score++;
+			if (Score % 10 == 9)
+				print("10 reached.");
+		}
 	}
 }
