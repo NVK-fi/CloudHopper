@@ -4,6 +4,7 @@ namespace Player
 {
 	using System;
 	using System.Collections;
+	using Managers;
 	using Platforms;
 	using Settings;
 
@@ -11,6 +12,7 @@ namespace Player
 	[DefaultExecutionOrder(-2)]
 	public class Player : MonoBehaviour
 	{
+		public event Action PlayerDeath;
 		public event Action<Platform> PlatformTouched;
 		public static Player Instance { get; private set; }
 		public PlayerControls Controls { get; private set; }
@@ -19,6 +21,7 @@ namespace Player
 		
 		private CharacterController _controller;
 		private bool _isColliderCooldownActive;
+		private float _deathHeight = -10f;
 
 		private void Awake()
 		{
@@ -39,7 +42,16 @@ namespace Player
 
 		private void OnDisable() => Controls.Disable();
 
-		private void LateUpdate() => _controller.Move(transform.rotation * LocalVelocity * Time.deltaTime);
+		private void LateUpdate()
+		{
+			if (GameManager.Instance.State == GameManager.GameState.Dead) return;
+			
+			_controller.Move(transform.rotation * LocalVelocity * Time.deltaTime);
+			
+			// Invoke Player death event.
+			if (transform.position.y < _deathHeight) 
+				PlayerDeath?.Invoke();
+		}
 
 		private void OnControllerColliderHit(ControllerColliderHit hit)
 		{
@@ -50,6 +62,9 @@ namespace Player
 
 			StartCoroutine(ColliderCooldown());
 			PlatformTouched?.Invoke(platform);
+			
+			// Update the DeathHeight from the lowest platform.
+			_deathHeight = GameManager.Instance.PlatformManager.GetLowestPlatformHeight() - 10f;
 		}
 
 		/// <summary>

@@ -42,8 +42,14 @@ namespace Player
 
 		private void OnPlatformTouched(Platform _) => Hop();
 
+		/// <summary>
+		/// Applies gravity to the player's local velocity.
+		/// </summary>
 		private void ApplyGravity() => _player.LocalVelocity += Vector3.down * (_physics.Gravity * Time.deltaTime);
 
+		/// <summary>
+		/// Performs a hop action.
+		/// </summary>
 		private void Hop()
 		{
 			// Apply the progression factor to hopping.
@@ -51,6 +57,9 @@ namespace Player
 			_player.LocalVelocity = _player.LocalVelocity.With(y: hopVelocity);
 		}
 
+		/// <summary>
+		/// Tries to make the player 'dive' by adjusting their vertical velocity if possible.
+		/// </summary>
 		private void TryDive(InputAction.CallbackContext _)
 		{
 			// Apply the progression factors to velocities.

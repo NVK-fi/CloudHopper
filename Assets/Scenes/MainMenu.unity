@@ -329,7 +329,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.1, z: 0.5}
+  m_LocalScale: {x: 0.75, y: 0.1, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1939066609}
@@ -394,7 +394,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 124622713379374259, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_Name
-      value: Cloud Platform 3
+      value: Cloud 3
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -456,7 +456,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 124622713379374259, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_Name
-      value: Cloud Platform 5
+      value: Cloud 5
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -579,7 +579,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 1000
+  far clip plane: 10000
   field of view: 65
   orthographic: 0
   orthographic size: 5
@@ -700,7 +700,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 124622713379374259, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_Name
-      value: Cloud Platform
+      value: Cloud
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1034,10 +1034,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97255bd71e4ce0343907ac8fcb895d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lowVolume: 0.2
-  highVolume: 0.4
-  lowPitch: 0.9
-  highPitch: 1.1
+  lowVolume: 0.15
+  highVolume: 0.25
+  lowPitch: 0.95
+  highPitch: 1.05
   playerMoveVertical: {fileID: 1939066613}
 --- !u!4 &1840339518 stripped
 Transform:
@@ -1172,7 +1172,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 124622713379374259, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_Name
-      value: Cloud Platform 2
+      value: Cloud 2
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1234,7 +1234,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 124622713379374259, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_Name
-      value: Cloud Platform 4
+      value: Cloud 4
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1369,7 +1369,7 @@ Light:
     m_Type: 2
     m_Resolution: 0
     m_CustomResolution: -1
-    m_Strength: 0.5
+    m_Strength: 0.75
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
