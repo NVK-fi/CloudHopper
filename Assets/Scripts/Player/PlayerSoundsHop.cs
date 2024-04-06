@@ -2,38 +2,37 @@ using UnityEngine;
 
 namespace Player
 {
+	using Game;
 	using Platforms;
 	using Random = Random;
 
-	[RequireComponent(typeof(AudioSource))]
 	public class PlayerSoundsHop : MonoBehaviour
 	{
 		[SerializeField] private float pitchVariety;
-		[SerializeField] private AudioClip[] clips;
+		[SerializeField] private AudioSource hopSoundSource;
+		[SerializeField] private AudioSource boostSoundSource;
 
-		private AudioSource _source;
-
-		private void Awake() => _source = GetComponent<AudioSource>();
-		private void OnEnable() => Player.Instance.PlatformTouched += OnPlatformTouched;
-		private void OnDisable() => Player.Instance.PlatformTouched -= OnPlatformTouched;
-
-		private void OnPlatformTouched(Platform _)
+		private void OnEnable()
 		{
-			PlayRandom();
+			Player.Instance.PlatformTouched += OnPlatformTouched;
+			GameManager.Instance.PlatformManager.PlatformSkipped += OnPlatformSkipped;
 		}
 
-		private void PlayRandom()
+		private void OnDisable()
 		{
-			if (clips.Length < 1) return;
-			_source.Stop();
-			
-			var index = Random.Range(0, clips.Length);
-			_source.clip = clips[index];
+			Player.Instance.PlatformTouched -= OnPlatformTouched;
+			GameManager.Instance.PlatformManager.PlatformSkipped -= OnPlatformSkipped;
+		}
 
-			var pitch = Random.Range(1f - pitchVariety * .5f, 1f + pitchVariety * .5f);
-			_source.pitch = pitch;
+		private void OnPlatformTouched(Platform _) => PlaySoundWithRandomPitch(hopSoundSource);
 
-			_source.Play();
+		private void OnPlatformSkipped() => PlaySoundWithRandomPitch(boostSoundSource);
+
+		private void PlaySoundWithRandomPitch(AudioSource audioSource)
+		{
+			audioSource.Stop();
+			audioSource.pitch = Random.Range(1f - pitchVariety * .5f, 1f + pitchVariety * .5f);
+			audioSource.Play();
 		}
 	}
 }

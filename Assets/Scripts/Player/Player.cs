@@ -4,7 +4,7 @@ namespace Player
 {
 	using System;
 	using System.Collections;
-	using Managers;
+	using Game;
 	using Platforms;
 	using Settings;
 
@@ -44,12 +44,10 @@ namespace Player
 
 		private void LateUpdate()
 		{
-			if (GameManager.Instance.State == GameManager.GameState.Dead) return;
-			
 			_controller.Move(transform.rotation * LocalVelocity * Time.deltaTime);
 			
 			// Invoke Player death event.
-			if (transform.position.y < _deathHeight) 
+			if (LocalVelocity.y < 0 && transform.position.y < _deathHeight) 
 				PlayerDeath?.Invoke();
 		}
 

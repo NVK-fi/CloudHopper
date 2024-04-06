@@ -2,53 +2,93 @@ using UnityEngine;
 
 namespace Player
 {
-	using Platforms;
+	using System.Collections;
+	using Tools;
+	using UnityEngine.InputSystem;
 
-	[RequireComponent(typeof(AudioSource))]
 	public class PlayerSoundsDive : MonoBehaviour
 	{
-		[SerializeField] private float lowVolume = .1f;
-		[SerializeField] private float highVolume = .5f;
-		[SerializeField] private float lowPitch = 0.9f;
+		[SerializeField] private float updateInterval = 0.05f;
+		[SerializeField] private float highVolume = .25f;
 		[SerializeField] private float highPitch = 1.1f;
-		[SerializeField] private PlayerMoveVertical playerMoveVertical;
 
 		private AudioSource _audioSource;
+		private float _normalVolume;
+		private float _normalPitch;
 
-		private void Awake()
+		private float _diveVelocity;
+		private float _timer;
+		private float _lastLerpValue;
+		private bool _isPlayerDead;
+
+
+		private void Start()
 		{
-			_audioSource = GetComponent<AudioSource>();
-			_audioSource.volume = lowVolume;
+			_audioSource = PersistentAudio.Instance.AudioSource;
 
-			if (playerMoveVertical == null)
+			if (_audioSource == null)
 			{
-				Debug.LogError("No PlayerMoveVertical attached to " + this + "!");
+				Debug.LogError("No persistent audio source found!");
 				enabled = false;
 			}
+			
+			_normalVolume = _audioSource.volume;
+			_normalPitch = _audioSource.pitch;
+			_diveVelocity = Player.Instance.Physics.DiveVelocity;
 		}
 
 		private void OnEnable()
 		{
-			playerMoveVertical.DivingStarted += OnDivingStarted;
-			Player.Instance.PlatformTouched += OnPlatformTouched;
+			Player.Instance.PlayerDeath += OnPlayerDeath;
+			Player.Instance.Controls.InGame.Dive.started += OnPlayerDive;
 		}
 
 		private void OnDisable()
 		{
-			playerMoveVertical.DivingStarted -= OnDivingStarted;
-			Player.Instance.PlatformTouched -= OnPlatformTouched;
+			Player.Instance.PlayerDeath -= OnPlayerDeath;
+			Player.Instance.Controls.InGame.Dive.started -= OnPlayerDive;
 		}
 
-		private void OnPlatformTouched(Platform _)
+		private void OnPlayerDeath() => _isPlayerDead = true;
+
+		private void OnPlayerDive(InputAction.CallbackContext _)
 		{
-			_audioSource.volume = lowVolume;
-			_audioSource.pitch = lowPitch;
+			if (!_isPlayerDead)
+				LerpPitchAndVolume();
 		}
 
-		private void OnDivingStarted()
+		private void Update()
 		{
-			_audioSource.volume = highVolume;
-			_audioSource.pitch = highPitch;
+			// Custom update interval.
+			_timer += Time.unscaledDeltaTime;
+			if (_timer < updateInterval) return;
+			_timer = 0f;
+
+			if (!_isPlayerDead)
+				LerpPitchAndVolume();
+			else
+				NormalizePitchAndVolume();
+		}
+
+		private void LerpPitchAndVolume()
+		{
+			var currentVelocity = Player.Instance.LocalVelocity.y;
+			var lerpValue = Mathf.InverseLerp(0f, -_diveVelocity, currentVelocity);
+
+			if (Mathf.Approximately(lerpValue, _lastLerpValue)) return;
+			
+			// Take the average of previous and current lerp values.
+			lerpValue = (_lastLerpValue + lerpValue) * .5f;
+			_lastLerpValue = lerpValue;
+			
+			_audioSource.volume = Mathf.Lerp(_normalVolume, highVolume, lerpValue);
+			_audioSource.pitch = Mathf.Lerp(_normalPitch, highPitch, lerpValue);
+		}
+
+		private void NormalizePitchAndVolume()
+		{
+			_audioSource.volume = Mathf.Lerp(_normalVolume, _audioSource.volume, .7f);
+			_audioSource.pitch = Mathf.Lerp(_normalPitch, _audioSource.pitch, .7f);
 		}
 	}
 }

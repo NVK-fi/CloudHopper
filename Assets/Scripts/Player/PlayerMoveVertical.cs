@@ -2,8 +2,7 @@ using UnityEngine;
 
 namespace Player
 {
-	using System;
-	using Managers;
+	using Game;
 	using Platforms;
 	using Settings;
 	using Tools;
@@ -12,12 +11,9 @@ namespace Player
 	[RequireComponent(typeof(Player))]
 	public class PlayerMoveVertical : MonoBehaviour
 	{
-		public event Action DivingStarted;
-		
 		private Player _player;
 		private ProgressionSettings _progression;
 		private PhysicsSettings _physics;
-		private bool _canDive;
 
 		private void Awake()
 		{
@@ -70,7 +66,6 @@ namespace Player
 			if (!_player.LocalVelocity.y.IsBetween(-diveVelocity, hopVelocity * .9f)) return;
 			
 			_player.LocalVelocity = _player.LocalVelocity.With(y: -diveVelocity);
-			DivingStarted?.Invoke();
 		}
 	}
 }

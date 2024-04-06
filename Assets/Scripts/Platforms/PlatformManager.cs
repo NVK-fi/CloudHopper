@@ -4,7 +4,7 @@ namespace Platforms
 {
 	using System;
 	using System.Linq;
-	using Managers;
+	using Game;
 	using Player;
 	using Settings;
 	using Tools;
@@ -87,9 +87,9 @@ namespace Platforms
 			var randomizedPosition = Random.insideUnitSphere * MaxHopDistance() * .3f;
 			var nextPosition = furthestPlatform.transform.position + additionalDistance + randomizedPosition;
 			
-			// Limit the Y-position.
-			nextPosition = nextPosition.With(y: Mathf.Clamp(nextPosition.y, -1000f, 1000f));
-
+			// Clamp the Vector3 to prevent issues with floating point precision.
+			nextPosition = nextPosition.ClampUniform(-10000f, 10000f);
+			
 			return nextPosition;
 		}
 

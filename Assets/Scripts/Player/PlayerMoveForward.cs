@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Player
 {
-	using Managers;
+	using Game;
 	using Platforms;
 	using Settings;
 	using Tools;
