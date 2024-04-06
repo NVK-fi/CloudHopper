@@ -2,13 +2,12 @@ using UnityEngine;
 
 namespace UI
 {
-	using System;
 	using Settings;
 	using TMPro;
 	using UnityEngine.UI;
 
 	[RequireComponent(typeof(Scrollbar))]
-	public class UIMenuSensitivitySlider : MonoBehaviour
+	public class SensitivitySlider : MonoBehaviour
 	{
 		[SerializeField] private TextMeshProUGUI handle;
 		private Scrollbar _scrollbar;
@@ -26,7 +25,7 @@ namespace UI
 
 		private void Start()
 		{
-			var sensitivity = PlayerPrefs.GetInt(SettingsStrings.Sensitivity, 5);
+			var sensitivity = PlayerPrefs.GetInt(Constants.SENSITIVITY_KEY, 5);
 			_scrollbar.value = sensitivity * .1f;
 		}
 
@@ -35,7 +34,7 @@ namespace UI
 			var value = Mathf.RoundToInt(_scrollbar.value * 10);
 			handle.text = "[" + value + "]";
 			
-			PlayerPrefs.SetInt(SettingsStrings.Sensitivity, value);
+			PlayerPrefs.SetInt(Constants.SENSITIVITY_KEY, value);
 			PlayerPrefs.Save();
 		}
 	}

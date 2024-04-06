@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7529709742606320126}
   - component: {fileID: 3586645054232411821}
   m_Layer: 0
-  m_Name: Persistent Audio
+  m_Name: Persistent Wind Loop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

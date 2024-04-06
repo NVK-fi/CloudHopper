@@ -5,7 +5,7 @@ namespace UI
 	using System.Collections;
 
 	[RequireComponent(typeof(CanvasGroup))]
-	public class UICanvasFader : MonoBehaviour
+	public class CanvasGroupFader : MonoBehaviour
 	{
 		private CanvasGroup _canvasGroup;
 	

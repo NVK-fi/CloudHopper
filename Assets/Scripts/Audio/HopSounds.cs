@@ -1,12 +1,15 @@
-using UnityEngine;
-
-namespace Player
+namespace Audio
 {
 	using Game;
 	using Platforms;
-	using Random = Random;
+	using Player;
+	using UnityEngine;
+	using Random = UnityEngine.Random;
 
-	public class PlayerSoundsHop : MonoBehaviour
+	/// <summary>
+	/// This class is responsible for playing hop sound effects in the game.
+	/// </summary>
+	public class HopSounds : MonoBehaviour
 	{
 		[SerializeField] private float pitchVariety;
 		[SerializeField] private AudioSource hopSoundSource;

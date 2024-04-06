@@ -7,7 +7,7 @@ namespace UI
 	using UnityEngine.UI;
 
 	[RequireComponent(typeof(Image))]
-	public class UIImageFader : MonoBehaviour
+	public class ImageFader : MonoBehaviour
 	{
 		private Image _image;
 	

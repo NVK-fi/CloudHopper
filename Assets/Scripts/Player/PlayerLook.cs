@@ -3,6 +3,7 @@ using UnityEngine;
 namespace Player
 {
 	using System.Collections;
+	using Controls;
 	using Settings;
 	using UnityEngine.InputSystem;
 
@@ -12,7 +13,7 @@ namespace Player
 		[SerializeField] private Camera playerCamera;
 
 		private Player _player;
-		private PlayerControls _controls;
+		private InputAsset _controls;
 		private float _cameraVerticalAngle;
 		private float _sensitivity;
 		
@@ -21,18 +22,18 @@ namespace Player
 		
 		private void Awake()
 		{
-			_player = GetComponent<Player>();
+			_player = Player.Instance;
 			_controls = _player.Controls;
 			
 			_cameraVerticalAngle = playerCamera.transform.localEulerAngles.x;
 
-			var sensitivityPower = PlayerPrefs.GetInt(SettingsStrings.Sensitivity, 5);
+			var sensitivityPower = PlayerPrefs.GetInt(Constants.SENSITIVITY_KEY, 5);
 			_sensitivity = Mathf.Pow(1.5f, sensitivityPower);
 		}
 
 		private void OnEnable()
 		{
-			HideCursor(true);
+			ShowCursor(false);
 			_controls.InGame.Look.performed += Look;
 
 			_inputBlockCoroutine = StartCoroutine(BlockInput(.5f));
@@ -40,7 +41,7 @@ namespace Player
 		
 		private void OnDisable()
 		{
-			HideCursor(false);
+			ShowCursor(true);
 			_controls.InGame.Look.performed -= Look;
 			
 			if (_inputBlockCoroutine != null)
@@ -65,21 +66,10 @@ namespace Player
 			playerCamera.transform.localEulerAngles = new Vector3(_cameraVerticalAngle, 0, 0);
 		}
 
-		/// <summary>
-		/// Hides or shows the cursor.
-		/// </summary>
-		private static void HideCursor(bool hide)
+		private static void ShowCursor(bool show)
 		{
-			if (hide)
-			{
-				Cursor.lockState = CursorLockMode.Locked;
-				Cursor.visible = false;
-			}
-			else
-			{
-				Cursor.lockState = CursorLockMode.None;
-				Cursor.visible = true;
-			}
+			Cursor.visible = show;
+			Cursor.lockState = show ? CursorLockMode.None : CursorLockMode.Locked;
 		}
 
 		private IEnumerator BlockInput(float seconds)

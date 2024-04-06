@@ -2,17 +2,23 @@ using UnityEngine;
 
 namespace UI
 {
+	using System;
 	using System.Collections;
+	using Controls;
 	using Settings;
 	using TMPro;
 	using Tools;
+	using UnityEngine.InputSystem;
 	using UnityEngine.SceneManagement;
 
+	/// <summary>
+	/// Represents the main menu.
+	/// </summary>
 	[RequireComponent(typeof(CanvasGroup))]
-	public class UIMenu : MonoBehaviour
+	public class Menu : MonoBehaviour
 	{
-		[SerializeField] private UICanvasFader canvasFader;
-		[SerializeField] private UIImageFader overlayFader;
+		[SerializeField] private CanvasGroupFader canvasGroupFader;
+		[SerializeField] private ImageFader overlayFader;
 		[SerializeField] private TextMeshProUGUI lastScoreTextContainer;
 		[SerializeField] private TextMeshProUGUI highScoreTextContainer;
 		[SerializeField] private TextMeshProUGUI startButtonTextContainer;
@@ -20,6 +26,7 @@ namespace UI
 		[SerializeField] private ParticleSystem rainParticles;
 
 		private CanvasGroup _canvasGroup;
+		private InputAsset _controls;
 		
 		private void Awake()
 		{
@@ -29,21 +36,30 @@ namespace UI
 				enabled = false;
 			}
 
-			if (overlayFader == null || canvasFader == null)
+			if (overlayFader == null || canvasGroupFader == null)
 			{
 				Debug.LogError("No fader set on " + this + "!");
 				enabled = false;
 			}
 
 			_canvasGroup = GetComponent<CanvasGroup>();
+			_controls = new InputAsset();
 		}
-		
+
+		private void OnEnable()
+		{
+			_controls.Enable();
+			_controls.UI.Cancel.performed += ExitGame;
+		}
+
+		private void OnDisable() => _controls.Disable();
+
 		private void Start()
 		{
-			var lastScore = PlayerPrefs.GetInt(SettingsStrings.LastScore, 0); 
+			var lastScore = PlayerPrefs.GetInt(Constants.LAST_SCORE_KEY, 0); 
 			lastScoreTextContainer.text = "Last Score: " + lastScore;
 			
-			var highScore = PlayerPrefs.GetInt(SettingsStrings.HighScore, 0);
+			var highScore = PlayerPrefs.GetInt(Constants.HIGH_SCORE_KEY, 0);
 			highScoreTextContainer.text = "High Score: " + highScore;
 			
 			if (startButtonTexts.Length > 0)
@@ -57,7 +73,7 @@ namespace UI
 			yield return overlayFader.FadeTo(0, .1f);
 			
 			_canvasGroup.interactable = true;
-			yield return canvasFader.FadeTo(1, .5f);
+			yield return canvasGroupFader.FadeTo(1, .5f);
 		}
 
 		public void StartGame() => StartCoroutine(GameStartCoroutine());
@@ -68,9 +84,18 @@ namespace UI
 			main.startLifetime = 0.1f;
 			rainParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 			
-			canvasFader.StopAllCoroutines();
-			yield return canvasFader.FadeTo(0, .3f);
+			canvasGroupFader.StopAllCoroutines();
+			yield return canvasGroupFader.FadeTo(0, .3f);
 			SceneManager.LoadScene(1);
+		}
+
+		private static void ExitGame(InputAction.CallbackContext _)
+		{
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+#else
+			Application.Quit();
+#endif
 		}
 	}
 }

@@ -13,10 +13,9 @@ namespace Game
 	{
 		public static GameManager Instance { get; private set; }
 		public int Score { get; private set; }
-		[field: SerializeField] public ProgressionSettings ProgressionSettings { get; private set; }
 		public PlatformManager PlatformManager { get; private set; }
 
-		[SerializeField] private UIImageFader imageFader;
+		[SerializeField] private ImageFader imageFader;
 
 		private void Awake()
 		{
@@ -29,9 +28,6 @@ namespace Game
 			PlatformManager = FindObjectOfType<PlatformManager>();
 			if (PlatformManager == null) 
 				Debug.LogError("No PlatformManager found in the scene!");
-
-			if (ProgressionSettings == null)
-				Debug.LogError("No ProgressionProgressionSettings set on " + this + "!");
 
 			Time.timeScale = 1f;
 		}
@@ -67,11 +63,11 @@ namespace Game
 			
 			Time.timeScale = 0f;
 
-			var currentHighScore = PlayerPrefs.GetInt(SettingsStrings.HighScore, 0);
+			var currentHighScore = PlayerPrefs.GetInt(Constants.HIGH_SCORE_KEY, 0);
 			if (Score > currentHighScore) 
-				PlayerPrefs.SetInt(SettingsStrings.HighScore, Score);
+				PlayerPrefs.SetInt(Constants.HIGH_SCORE_KEY, Score);
 			
-			PlayerPrefs.SetInt(SettingsStrings.LastScore, Score);
+			PlayerPrefs.SetInt(Constants.LAST_SCORE_KEY, Score);
 			PlayerPrefs.Save();
 
 			yield return new WaitForSecondsRealtime(0.2f);
@@ -85,7 +81,7 @@ namespace Game
 		// Score 1 point when the player hops.
 		private void OnPlatformTouched(Platform _) => Score++;
 
-		// Score 10 (1+9) points when the player skips a platform.
+		// Score 10 points (1+9) when the player skips a platform.
 		private void OnPlatformSkipped() => Score += 9;
 	}
 }

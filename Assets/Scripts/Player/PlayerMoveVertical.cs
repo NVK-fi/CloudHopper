@@ -8,18 +8,15 @@ namespace Player
 	using Tools;
 	using UnityEngine.InputSystem;
 
-	[RequireComponent(typeof(Player))]
 	public class PlayerMoveVertical : MonoBehaviour
 	{
 		private Player _player;
-		private ProgressionSettings _progression;
-		private PhysicsSettings _physics;
+		private PhysicsSettings _physicsSettings;
 
 		private void Awake()
 		{
-			_player = GetComponent<Player>();
-			_progression = GameManager.Instance.ProgressionSettings;
-			_physics = _player.Physics;
+			_player = Player.Instance;
+			_physicsSettings = _player.PhysicsSettings;
 		}
 
 		private void Update() => ApplyGravity();
@@ -27,42 +24,32 @@ namespace Player
 		private void OnEnable()
 		{
 			_player.Controls.InGame.Dive.started += TryDive;
-			_player.PlatformTouched += OnPlatformTouched;
+			_player.PlatformTouched += Hop;
 		}
 
 		private void OnDisable()
 		{
 			_player.Controls.InGame.Dive.started -= TryDive;
-			_player.PlatformTouched -= OnPlatformTouched;
+			_player.PlatformTouched -= Hop;
 		}
 
-		private void OnPlatformTouched(Platform _) => Hop();
+		private void ApplyGravity() => _player.LocalVelocity += Vector3.down * (_physicsSettings.Gravity * Time.deltaTime);
 
-		/// <summary>
-		/// Applies gravity to the player's local velocity.
-		/// </summary>
-		private void ApplyGravity() => _player.LocalVelocity += Vector3.down * (_physics.Gravity * Time.deltaTime);
-
-		/// <summary>
-		/// Performs a hop action.
-		/// </summary>
-		private void Hop()
+		private void Hop(Platform _)
 		{
-			// Apply the progression factor to hopping.
-			var hopVelocity = _physics.HopVelocity * _progression.VerticalVelocity(GameManager.Instance.Score);
+			var progressionMultiplier = _player.GetProgressionMultiplier(Player.Direction.Vertical, GameManager.Instance.Score);
+			var hopVelocity = _physicsSettings.HopVelocity * progressionMultiplier;
+			
 			_player.LocalVelocity = _player.LocalVelocity.With(y: hopVelocity);
 		}
 
-		/// <summary>
-		/// Tries to make the player 'dive' by adjusting their vertical velocity if possible.
-		/// </summary>
 		private void TryDive(InputAction.CallbackContext _)
 		{
-			// Apply the progression factors to velocities.
-			var diveVelocity = _physics.DiveVelocity * _progression.VerticalVelocity(GameManager.Instance.Score);
-			var hopVelocity = _physics.HopVelocity * _progression.VerticalVelocity(GameManager.Instance.Score);
+			var progressionMultiplier = _player.GetProgressionMultiplier(Player.Direction.Vertical, GameManager.Instance.Score);
+			var diveVelocity = _physicsSettings.DiveVelocity * progressionMultiplier;
+			var hopVelocity = _physicsSettings.HopVelocity * progressionMultiplier;
 			
-			// Make sure the player has not just hopped or already is diving.
+			// Make sure the player is not already diving or had not just hopped.
 			if (!_player.LocalVelocity.y.IsBetween(-diveVelocity, hopVelocity * .9f)) return;
 			
 			_player.LocalVelocity = _player.LocalVelocity.With(y: -diveVelocity);

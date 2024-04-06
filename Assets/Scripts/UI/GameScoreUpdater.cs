@@ -9,9 +9,12 @@ namespace UI
 	using TMPro;
 
 	[RequireComponent(typeof(TextMeshProUGUI))]
-	public class UIGameScoreUpdater : MonoBehaviour
+	public class GameScoreUpdater : MonoBehaviour
 	{
-
+		[SerializeField] private float defaultTextPop = 1.3f;
+		[SerializeField] private float bigTextPop = 1.6f;
+		[SerializeField] private float textPopDuration = 2f;
+		
 		private TextMeshProUGUI _textContainer;
 		private float _defaultFontSize;
 		private Coroutine _textPopCoroutine;
@@ -40,7 +43,7 @@ namespace UI
 			
 			if (_textPopCoroutine != null)
 				StopCoroutine(_textPopCoroutine);
-			_textPopCoroutine = StartCoroutine(TextPopEffect(1.25f, 2f));
+			_textPopCoroutine = StartCoroutine(TextPopEffect(defaultTextPop, textPopDuration));
 		}
 
 		private void OnPlatformSkipped()
@@ -49,7 +52,7 @@ namespace UI
 			
 			if (_textPopCoroutine != null)
 				StopCoroutine(_textPopCoroutine);
-			_textPopCoroutine = StartCoroutine(TextPopEffect(1.5f, 2f));
+			_textPopCoroutine = StartCoroutine(TextPopEffect(bigTextPop, textPopDuration));
 		}
 
 		private IEnumerator TextPopEffect(float scale, float duration)
