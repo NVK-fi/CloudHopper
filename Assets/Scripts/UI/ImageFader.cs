@@ -6,13 +6,19 @@ namespace UI
 	using Tools;
 	using UnityEngine.UI;
 
+	/// <summary>
+	/// Handles fading of an Image component.
+	/// </summary>
 	[RequireComponent(typeof(Image))]
 	public class ImageFader : MonoBehaviour
 	{
 		private Image _image;
 	
 		private void Awake() => _image = GetComponent<Image>();
-
+		
+		/// <summary>
+		/// Fades an Image component to a target alpha value over a specified duration.
+		/// </summary>
 		public IEnumerator FadeTo(float targetAlpha, float duration)
 		{
 			var initialAlpha = _image.color.a;

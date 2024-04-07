@@ -484,7 +484,7 @@ MonoBehaviour:
   - TIME TO HOP
   - TAKE A HOP
   - LET'S HOP
-  - HOP HOP
+  - HOP HOP HURRAY
   rainParticles: {fileID: 697591372}
 --- !u!114 &122335284
 MonoBehaviour:
@@ -929,6 +929,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1085465571}
+  - component: {fileID: 1085465574}
   - component: {fileID: 1085465573}
   - component: {fileID: 1085465572}
   m_Layer: 5
@@ -1056,6 +1057,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1085465570}
   m_CullTransparentMesh: 1
+--- !u!114 &1085465574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085465570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7bcadce12d6fce479b42fdc871207f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 10
+  cycleDuration: 3
 --- !u!1001 &1111122736
 PrefabInstance:
   m_ObjectHideFlags: 0

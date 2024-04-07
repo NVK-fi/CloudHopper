@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace UI
 {
-	using System;
 	using System.Collections;
 	using Controls;
 	using Settings;
@@ -30,6 +29,8 @@ namespace UI
 		
 		private void Awake()
 		{
+			Time.timeScale = 1f;
+			
 			if (lastScoreTextContainer == null || highScoreTextContainer == null || startButtonTextContainer == null)
 			{
 				Debug.LogError("No text container set on " + this + "!");

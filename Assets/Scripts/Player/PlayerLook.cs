@@ -7,6 +7,9 @@ namespace Player
 	using Settings;
 	using UnityEngine.InputSystem;
 
+	/// <summary>
+	/// Responsible for controlling the player's look direction in the game.
+	/// </summary>
 	[RequireComponent(typeof(Player))]
 	public class PlayerLook : MonoBehaviour
 	{

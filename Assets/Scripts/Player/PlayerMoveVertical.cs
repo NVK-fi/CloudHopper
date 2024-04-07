@@ -8,6 +8,9 @@ namespace Player
 	using Tools;
 	using UnityEngine.InputSystem;
 
+	/// <summary>
+	/// Moves the player vertically by handling hopping, diving and the gravity of the situation.
+	/// </summary>
 	public class PlayerMoveVertical : MonoBehaviour
 	{
 		private Player _player;
@@ -37,7 +40,7 @@ namespace Player
 
 		private void Hop(Platform _)
 		{
-			var progressionMultiplier = _player.GetProgressionMultiplier(Player.Direction.Vertical, GameManager.Instance.Score);
+			var progressionMultiplier = _player.GetProgressionMultiplier(Player.Direction.Vertical, GameManager.Instance.Score.Current);
 			var hopVelocity = _physicsSettings.HopVelocity * progressionMultiplier;
 			
 			_player.LocalVelocity = _player.LocalVelocity.With(y: hopVelocity);
@@ -45,7 +48,7 @@ namespace Player
 
 		private void TryDive(InputAction.CallbackContext _)
 		{
-			var progressionMultiplier = _player.GetProgressionMultiplier(Player.Direction.Vertical, GameManager.Instance.Score);
+			var progressionMultiplier = _player.GetProgressionMultiplier(Player.Direction.Vertical, GameManager.Instance.Score.Current);
 			var diveVelocity = _physicsSettings.DiveVelocity * progressionMultiplier;
 			var hopVelocity = _physicsSettings.HopVelocity * progressionMultiplier;
 			

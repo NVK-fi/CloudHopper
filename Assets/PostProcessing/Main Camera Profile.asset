@@ -39,7 +39,7 @@ MonoBehaviour:
     defaultState: 1
   intensity:
     overrideState: 1
-    value: 0.04
+    value: 0.05
   fastMode:
     overrideState: 1
     value: 1
@@ -64,7 +64,7 @@ MonoBehaviour:
     value: 250
   sampleCount:
     overrideState: 1
-    value: 4
+    value: 8
 --- !u!114 &6479443011128227351
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -86,7 +86,7 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 0.04
+    value: 0.05
   size:
     overrideState: 1
     value: 0.5

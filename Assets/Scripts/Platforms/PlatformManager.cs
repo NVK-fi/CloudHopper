@@ -9,7 +9,7 @@ namespace Platforms
 	using Settings;
 	using Tools;
 	using Random = Random;
-	
+
 	public class PlatformManager : MonoBehaviour
 	{
 		public event Action PlatformSkipped;
@@ -97,7 +97,7 @@ namespace Platforms
 		private float MaxHopDistance()
 		{
 			// Calculate the forward and hopping velocities with progression factors.
-			var scoreWithOffset = GameManager.Instance.Score + _platforms.Length - 1;
+			var scoreWithOffset = GameManager.Instance.Score.Current + _platforms.Length - 1;
 
 			var forwardMultiplier = _player.GetProgressionMultiplier(Player.Direction.Forward, scoreWithOffset);
 			var forwardVelocity = _physicsSettings.ForwardVelocity * forwardMultiplier;

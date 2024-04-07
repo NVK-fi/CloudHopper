@@ -6,6 +6,9 @@ namespace Player
 	using Platforms;
 	using Tools;
 
+	/// <summary>
+	/// Moves the player forward constantly physics settings and game progression.
+	/// </summary>
 	[RequireComponent(typeof(Player))]
 	public class PlayerMoveForward : MonoBehaviour
 	{
@@ -22,7 +25,7 @@ namespace Player
 		private void UpdateForwardVelocity()
 		{
 			// Apply the progression factor to forward velocity. The player goes faster after each hop.
-			var progressionMultiplier = _player.GetProgressionMultiplier(Player.Direction.Forward, GameManager.Instance.Score);
+			var progressionMultiplier = _player.GetProgressionMultiplier(Player.Direction.Forward, GameManager.Instance.Score.Current);
 			var forwardVelocity = _player.PhysicsSettings.ForwardVelocity * progressionMultiplier;
 			
 			_player.LocalVelocity = _player.LocalVelocity.With(z: forwardVelocity);

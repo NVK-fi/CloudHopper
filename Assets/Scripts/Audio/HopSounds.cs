@@ -18,13 +18,13 @@ namespace Audio
 		private void OnEnable()
 		{
 			Player.Instance.PlatformTouched += OnPlatformTouched;
-			GameManager.Instance.PlatformManager.PlatformSkipped += OnPlatformSkipped;
+			GameManager.Instance.Platforms.PlatformSkipped += OnPlatformSkipped;
 		}
 
 		private void OnDisable()
 		{
 			Player.Instance.PlatformTouched -= OnPlatformTouched;
-			GameManager.Instance.PlatformManager.PlatformSkipped -= OnPlatformSkipped;
+			GameManager.Instance.Platforms.PlatformSkipped -= OnPlatformSkipped;
 		}
 
 		private void OnPlatformTouched(Platform _) => PlaySoundWithRandomPitch(hopSoundSource);

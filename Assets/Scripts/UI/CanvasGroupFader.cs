@@ -4,13 +4,19 @@ namespace UI
 {
 	using System.Collections;
 
+	/// <summary>
+	/// Handles fading of a CanvasGroup component.
+	/// </summary>
 	[RequireComponent(typeof(CanvasGroup))]
 	public class CanvasGroupFader : MonoBehaviour
 	{
 		private CanvasGroup _canvasGroup;
 	
 		private void Awake() => _canvasGroup = GetComponent<CanvasGroup>();
-
+		
+		/// <summary>
+		/// Fades a CanvasGroup component to a target alpha value over a specified duration.
+		/// </summary>
 		public IEnumerator FadeTo(float targetAlpha, float duration)
 		{
 			var initialAlpha = _canvasGroup.alpha;

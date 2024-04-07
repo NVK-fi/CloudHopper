@@ -76,7 +76,7 @@ namespace Player
 			}
 			
 			// Update the DeathHeight from the lowest platform.
-			_deathHeight = GameManager.Instance.PlatformManager.GetTheLowestPlatformHeight() - 10f;
+			_deathHeight = GameManager.Instance.Platforms.GetTheLowestPlatformHeight() - 10f;
 		}
 
 		/// <summary>

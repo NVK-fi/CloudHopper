@@ -6,6 +6,9 @@ namespace UI
 	using TMPro;
 	using UnityEngine.UI;
 
+	/// <summary>
+	/// A slider that adjusts look sensitivity setting.
+	/// </summary>
 	[RequireComponent(typeof(Scrollbar))]
 	public class SensitivitySlider : MonoBehaviour
 	{

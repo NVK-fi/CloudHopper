@@ -637,7 +637,7 @@ GameObject:
   - component: {fileID: 1078892039}
   - component: {fileID: 1078892041}
   m_Layer: 3
-  m_Name: Sounds
+  m_Name: Sound Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -781,7 +781,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 03425d5f5b6b42947ac5c4963cc1328d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.4
+  m_Volume: 0.35
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -825,7 +825,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.25
+      value: 0.5
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1433,6 +1433,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6a3e05096834a24e84d81a9969d7a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Platforms>k__BackingField: {fileID: 83838973}
+  <Score>k__BackingField: {fileID: 2007001092}
   imageFader: {fileID: 1598769882}
 --- !u!4 &2007001091
 Transform:
@@ -1458,7 +1460,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2007001089}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f0d85c0d37d58a4b8099fcae180aea3, type: 3}
+  m_Script: {fileID: 11500000, guid: 3eb3cc6aae4521a4b8318282dad47abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!108 &2111416052 stripped

@@ -4,12 +4,13 @@ namespace UI
 {
 	using System.Collections;
 	using Game;
-	using Platforms;
-	using Player;
 	using TMPro;
 
+	/// <summary>
+	/// Updates the game score on UI.
+	/// </summary>
 	[RequireComponent(typeof(TextMeshProUGUI))]
-	public class GameScoreUpdater : MonoBehaviour
+	public class GameScoreVisualizer : MonoBehaviour
 	{
 		[SerializeField] private float defaultTextPop = 1.3f;
 		[SerializeField] private float bigTextPop = 1.6f;
@@ -25,39 +26,27 @@ namespace UI
 			_defaultFontSize = _textContainer.fontSize;
 		}
 
-		private void OnEnable()
-		{
-			Player.Instance.PlatformTouched += OnPlatformTouched;
-			GameManager.Instance.PlatformManager.PlatformSkipped += OnPlatformSkipped;
-		}
+		private void OnEnable() => GameManager.Instance.Score.ScoreIncreased += OnScoreIncreased;
 
-		private void OnDisable()
-		{
-			Player.Instance.PlatformTouched -= OnPlatformTouched;
-			GameManager.Instance.PlatformManager.PlatformSkipped -= OnPlatformSkipped;
-		}
+		private void OnDisable() => GameManager.Instance.Score.ScoreIncreased -= OnScoreIncreased;
 
-		private void OnPlatformTouched(Platform _)
+		private void OnScoreIncreased(int increase)
 		{
-			_textContainer.text = GameManager.Instance.Score.ToString();
+			if (increase < 1) return;
+			
+			_textContainer.text = GameManager.Instance.Score.Current.ToString();
 			
 			if (_textPopCoroutine != null)
 				StopCoroutine(_textPopCoroutine);
-			_textPopCoroutine = StartCoroutine(TextPopEffect(defaultTextPop, textPopDuration));
-		}
 
-		private void OnPlatformSkipped()
-		{
-			_textContainer.text = GameManager.Instance.Score.ToString();
-			
-			if (_textPopCoroutine != null)
-				StopCoroutine(_textPopCoroutine);
-			_textPopCoroutine = StartCoroutine(TextPopEffect(bigTextPop, textPopDuration));
+			_textPopCoroutine = StartCoroutine(increase > 1 
+				? TextPopEffect(bigTextPop, textPopDuration) 
+				: TextPopEffect(defaultTextPop, textPopDuration));
 		}
 
 		private IEnumerator TextPopEffect(float scale, float duration)
 		{
-			// Start with the scale and then size it back to normal over the set duration.
+			// Start with the new size and then scale it back to normal over the set duration.
 			_textContainer.fontSize *= scale;
 			var time = 0f;
 			while (time < duration)
