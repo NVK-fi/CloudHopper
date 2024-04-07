@@ -4,12 +4,12 @@ namespace Game
 {
 	using System;
 	using Platforms;
-	using Player;
 	using Settings;
 
 	/// <summary>
 	/// Manages the game score.
 	/// </summary>
+	[RequireComponent(typeof(Game))]
 	public class GameScore : MonoBehaviour
 	{
 		/// <summary>
@@ -27,16 +27,16 @@ namespace Game
 
 		private void OnEnable()
 		{
-			GameManager.Instance.Platforms.PlatformSkipped += OnPlatformSkipped;
-			Player.Instance.PlatformTouched += OnPlatformTouched;
-			Player.Instance.PlayerDeath += OnPlayerDeath;
+			Game.Instance.Platforms.PlatformsSkipped += OnPlatformsSkipped;
+			Game.Instance.Player.TouchedPlatform += OnPlayerTouchedPlatform;
+			Game.Instance.Player.Death += OnPlayerDeath;
 		}
 
 		private void OnDisable()
 		{
-			GameManager.Instance.Platforms.PlatformSkipped -= OnPlatformSkipped;
-			Player.Instance.PlatformTouched -= OnPlatformTouched;
-			Player.Instance.PlayerDeath -= OnPlayerDeath;
+			Game.Instance.Platforms.PlatformsSkipped -= OnPlatformsSkipped;
+			Game.Instance.Player.TouchedPlatform -= OnPlayerTouchedPlatform;
+			Game.Instance.Player.Death -= OnPlayerDeath;
 		}
 
 		private void OnPlayerDeath()
@@ -50,17 +50,18 @@ namespace Game
 		}
 
 		// Score 1 point when the player hops.
-		private void OnPlatformTouched(Platform _)
+		private void OnPlayerTouchedPlatform(Platform _)
 		{
 			Current++;
 			ScoreIncreased?.Invoke(1);
 		}
 
-		// Score 10 points (1 point + bonus 9 points) when the player skips a platform.
-		private void OnPlatformSkipped()
+		// Score 10 points each time the player skips a platform.
+		private void OnPlatformsSkipped(int count)
 		{
-			Current += 9;
-			ScoreIncreased?.Invoke(9);
+			var scoreIncrease = 10 * count - 1; 
+			Current += scoreIncrease;
+			ScoreIncreased?.Invoke(scoreIncrease);
 		}
 	}
 }

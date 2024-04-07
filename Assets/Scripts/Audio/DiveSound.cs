@@ -1,5 +1,6 @@
 namespace Audio
 {
+	using Game;
 	using Player;
 	using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Audio
 		[SerializeField] private float pitchMultiplier = 1.08f;
 		[SerializeField] private float updateInterval = 0.05f;
 
+		private Player _player;
 		private AudioSource _audioSource;
 
 		private bool _isAlive = true;
@@ -28,6 +30,7 @@ namespace Audio
 
 		private void Awake()
 		{
+			_player = Game.Instance.Player;
 			_audioSource = PersistentWindLoop.Instance.AudioSource;
 
 			if (_audioSource == null)
@@ -44,17 +47,17 @@ namespace Audio
 			_highVolume = _normalVolume * volumeMultiplier;
 			_highPitch = _normalPitch * pitchMultiplier;
 
-			_diveVelocity = Player.Instance.PhysicsSettings.DiveVelocity;
+			_diveVelocity = Game.Instance.PhysicsSettings.DiveVelocity;
 		}
 
 		private void OnEnable()
 		{
-			Player.Instance.PlayerDeath += OnPlayerDeath;
+			_player.Death += OnPlayerDeath;
 		}
 
 		private void OnDisable()
 		{
-			Player.Instance.PlayerDeath -= OnPlayerDeath;
+			_player.Death -= OnPlayerDeath;
 
 			if (_audioSource == null) return;
 			_audioSource.volume = _normalVolume;
@@ -70,7 +73,7 @@ namespace Audio
 			if (_timer < updateInterval) return;
 			_timer = 0f;
 
-			var velocity = _isAlive ? Player.Instance.LocalVelocity.y : 0f;
+			var velocity = _isAlive ? _player.LocalVelocity.y : 0f;
 			LerpPitchAndVolume(velocity);
 		}
 

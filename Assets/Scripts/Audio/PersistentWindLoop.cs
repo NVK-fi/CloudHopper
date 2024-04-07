@@ -3,7 +3,7 @@ namespace Audio
 	using UnityEngine;
 
 	/// <summary>
-	/// Represents a persistent looped wind audio source.
+	/// Represents a persistent singleton with a looped wind audio source.
 	/// The audio is meant to be played throughout the gameplay.
 	/// </summary>
 	[RequireComponent(typeof(AudioSource))]

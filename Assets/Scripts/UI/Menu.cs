@@ -77,7 +77,7 @@ namespace UI
 			yield return canvasGroupFader.FadeTo(1, .5f);
 		}
 
-		public void StartGame() => StartCoroutine(GameStartCoroutine());
+		public void PressStart() => StartCoroutine(GameStartCoroutine());
 
 		private IEnumerator GameStartCoroutine()
 		{

@@ -4,6 +4,7 @@ namespace Player
 {
 	using System.Collections;
 	using Controls;
+	using Game;
 	using Settings;
 	using UnityEngine.InputSystem;
 
@@ -15,7 +16,6 @@ namespace Player
 	{
 		[SerializeField] private Camera playerCamera;
 
-		private Player _player;
 		private InputAsset _controls;
 		private float _cameraVerticalAngle;
 		private float _sensitivity;
@@ -25,9 +25,7 @@ namespace Player
 		
 		private void Awake()
 		{
-			_player = Player.Instance;
-			_controls = _player.Controls;
-			
+			_controls = Game.Instance.Controls;
 			_cameraVerticalAngle = playerCamera.transform.localEulerAngles.x;
 
 			var sensitivityPower = PlayerPrefs.GetInt(Constants.SENSITIVITY_KEY, 5);
@@ -37,7 +35,7 @@ namespace Player
 		private void OnEnable()
 		{
 			ShowCursor(false);
-			_controls.InGame.Look.performed += Look;
+			_controls.InGame.Look.performed += OnLookPerformed;
 
 			_inputBlockCoroutine = StartCoroutine(BlockInput(.5f));
 		}
@@ -45,7 +43,7 @@ namespace Player
 		private void OnDisable()
 		{
 			ShowCursor(true);
-			_controls.InGame.Look.performed -= Look;
+			_controls.InGame.Look.performed -= OnLookPerformed;
 			
 			if (_inputBlockCoroutine != null)
 				StopCoroutine(_inputBlockCoroutine);
@@ -54,7 +52,7 @@ namespace Player
 		/// <summary>
 		/// Rotates the Player horizontally and the Camera vertically based on user input.
 		/// </summary>
-		private void Look(InputAction.CallbackContext context)
+		private void OnLookPerformed(InputAction.CallbackContext context)
 		{
 			if (_isInputBlocked) return;
 			

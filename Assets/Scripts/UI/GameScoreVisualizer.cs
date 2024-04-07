@@ -26,15 +26,15 @@ namespace UI
 			_defaultFontSize = _textContainer.fontSize;
 		}
 
-		private void OnEnable() => GameManager.Instance.Score.ScoreIncreased += OnScoreIncreased;
+		private void OnEnable() => Game.Instance.Score.ScoreIncreased += OnScoreIncreased;
 
-		private void OnDisable() => GameManager.Instance.Score.ScoreIncreased -= OnScoreIncreased;
+		private void OnDisable() => Game.Instance.Score.ScoreIncreased -= OnScoreIncreased;
 
 		private void OnScoreIncreased(int increase)
 		{
 			if (increase < 1) return;
 			
-			_textContainer.text = GameManager.Instance.Score.Current.ToString();
+			_textContainer.text = Game.Instance.Score.Current.ToString();
 			
 			if (_textPopCoroutine != null)
 				StopCoroutine(_textPopCoroutine);

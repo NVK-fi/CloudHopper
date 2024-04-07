@@ -2,7 +2,6 @@ namespace Audio
 {
 	using Game;
 	using Platforms;
-	using Player;
 	using UnityEngine;
 	using Random = UnityEngine.Random;
 
@@ -17,19 +16,19 @@ namespace Audio
 
 		private void OnEnable()
 		{
-			Player.Instance.PlatformTouched += OnPlatformTouched;
-			GameManager.Instance.Platforms.PlatformSkipped += OnPlatformSkipped;
+			Game.Instance.Player.TouchedPlatform += OnPlayerTouchedPlatform;
+			Game.Instance.Platforms.PlatformsSkipped += OnPlatformsSkipped;
 		}
 
 		private void OnDisable()
 		{
-			Player.Instance.PlatformTouched -= OnPlatformTouched;
-			GameManager.Instance.Platforms.PlatformSkipped -= OnPlatformSkipped;
+			Game.Instance.Player.TouchedPlatform -= OnPlayerTouchedPlatform;
+			Game.Instance.Platforms.PlatformsSkipped -= OnPlatformsSkipped;
 		}
 
-		private void OnPlatformTouched(Platform _) => PlaySoundWithRandomPitch(hopSoundSource);
+		private void OnPlayerTouchedPlatform(Platform _) => PlaySoundWithRandomPitch(hopSoundSource);
 
-		private void OnPlatformSkipped() => PlaySoundWithRandomPitch(boostSoundSource);
+		private void OnPlatformsSkipped(int _) => PlaySoundWithRandomPitch(boostSoundSource);
 
 		private void PlaySoundWithRandomPitch(AudioSource audioSource)
 		{

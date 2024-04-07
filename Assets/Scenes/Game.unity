@@ -877,87 +877,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97255bd71e4ce0343907ac8fcb895d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeMultiplier: 2
+  volumeMultiplier: 2.05
   pitchMultiplier: 1.08
   updateInterval: 0.05
---- !u!1 &1347472319
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1347472322}
-  - component: {fileID: 1347472321}
-  - component: {fileID: 1347472323}
-  m_Layer: 5
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1347472321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1347472319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &1347472322
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1347472319}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1784874461}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1347472323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1347472319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_MoveRepeatDelay: 0.5
-  m_MoveRepeatRate: 0.1
-  m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: f54bef5b5d5cc3d4eb85a4db3cb285e3, type: 3}
-  m_PointAction: {fileID: 0}
-  m_MoveAction: {fileID: 0}
-  m_SubmitAction: {fileID: 0}
-  m_CancelAction: {fileID: 0}
-  m_LeftClickAction: {fileID: 0}
-  m_MiddleClickAction: {fileID: 0}
-  m_RightClickAction: {fileID: 0}
-  m_ScrollWheelAction: {fileID: 0}
-  m_TrackedDevicePositionAction: {fileID: 0}
-  m_TrackedDeviceOrientationAction: {fileID: 0}
-  m_DeselectOnBackgroundClick: 1
-  m_PointerBehavior: 0
-  m_CursorLockBehavior: 0
 --- !u!224 &1598769879 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1043530873146413533, guid: f4ffc05af0bb73440983f137ccb5db07, type: 3}
@@ -1004,7 +926,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 341927301}
-  - {fileID: 1347472322}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1840339518 stripped
@@ -1090,8 +1011,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f4ce7753f7d580429d776cd4ba25c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <PhysicsSettings>k__BackingField: {fileID: 11400000, guid: b6866034c87f93547a8967d4eb93b852, type: 2}
-  progressionSettings: {fileID: 11400000, guid: 2c78c1f1661190e44ac41149d258740c, type: 2}
 --- !u!114 &1939066612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1414,6 +1333,7 @@ GameObject:
   - component: {fileID: 2007001091}
   - component: {fileID: 2007001090}
   - component: {fileID: 2007001092}
+  - component: {fileID: 2007001093}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -1433,9 +1353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6a3e05096834a24e84d81a9969d7a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Player>k__BackingField: {fileID: 1939066610}
   <Platforms>k__BackingField: {fileID: 83838973}
   <Score>k__BackingField: {fileID: 2007001092}
-  imageFader: {fileID: 1598769882}
+  <PhysicsSettings>k__BackingField: {fileID: 11400000, guid: b6866034c87f93547a8967d4eb93b852, type: 2}
+  <ProgressionSettings>k__BackingField: {fileID: 11400000, guid: 2c78c1f1661190e44ac41149d258740c, type: 2}
 --- !u!4 &2007001091
 Transform:
   m_ObjectHideFlags: 0
@@ -1463,6 +1385,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eb3cc6aae4521a4b8318282dad47abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2007001093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007001089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aef4884e7905daf41aa1d9610329c4b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ExitTransitionDuration>k__BackingField: 0.75
+  manualExitTransitionDuration: 0.25
+  imageFader: {fileID: 1598769882}
 --- !u!108 &2111416052 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 7478212384081547482, guid: 0af0fee98b0a624489286d15d03dc9fa, type: 3}

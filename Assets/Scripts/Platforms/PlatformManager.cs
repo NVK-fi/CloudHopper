@@ -5,80 +5,82 @@ namespace Platforms
 	using System;
 	using System.Linq;
 	using Game;
-	using Player;
 	using Settings;
 	using Tools;
 	using Random = Random;
 
 	public class PlatformManager : MonoBehaviour
 	{
-		public event Action PlatformSkipped;
+		public event Action<int> PlatformsSkipped;
 		
-		[SerializeField] private Platform furthestPlatform;
-
-		private Player _player;
-		private PhysicsSettings _physicsSettings;
 		private Platform[] _platforms;
+		private Platform _furthestPlatform;
 
 		private void Awake()
 		{
-			if (furthestPlatform == null)
+			_platforms = GetComponentsInChildren<Platform>();
+
+			if (_platforms == null || _platforms.Length < 1)
 			{
-				Debug.LogError("No furthest platform set on " + this + "!");
+				Debug.LogError("No Platform(s) found on " + this + "!");
 				enabled = false;
+				return;
 			}
 
-			_player = Player.Instance;
-			_physicsSettings = _player.PhysicsSettings;
-			_platforms = GetComponentsInChildren<Platform>();
+			// Calculate the furthest platform.
+			var furthestDistance = Mathf.NegativeInfinity;
+			foreach (var platform in _platforms)
+			{
+				if (platform.transform.position.z <= furthestDistance) continue;
+				
+				furthestDistance = platform.transform.position.z;
+				_furthestPlatform = platform;
+			}
 		}
 
 		private void OnEnable()
 		{
-			_player.PlatformTouched += OnPlatformTouched;
-			_player.PlayerTooFar += OnPlayerTooFar;
+			Game.Instance.Player.TouchedPlatform += OnPlayerTouchedPlatform;
+			Game.Instance.Player.ReachedMaxDistance += OnPlayerReachedMaxDistance;
 		}
 
 		private void OnDisable()
 		{
-			_player.PlatformTouched -= OnPlatformTouched;
-			_player.PlayerTooFar += OnPlayerTooFar;
+			Game.Instance.Player.TouchedPlatform -= OnPlayerTouchedPlatform;
+			Game.Instance.Player.ReachedMaxDistance += OnPlayerReachedMaxDistance;
 		}
 
 
-		private void OnPlatformTouched(Platform touchedPlatform)
+		private void OnPlayerTouchedPlatform(Platform touchedPlatform)
 		{
+			if (touchedPlatform == null) return;
+			
 			// All platforms left behind are moved first.
-			// This only happens when the player skips a platform.
-			CheckForSkippedPlatforms(touchedPlatform);
+			MoveSkippedPlatforms(touchedPlatform);
 			
 			// Move the current platform to a new position.
-			MovePlatformToNextPosition(touchedPlatform);
+			touchedPlatform.TeleportTo(CalculateNextPlatformPosition());
+			_furthestPlatform = touchedPlatform;
 		}
 
-		private void CheckForSkippedPlatforms(Platform touchedPlatform)
+		private void MoveSkippedPlatforms(Platform touchedPlatform)
 		{
+			var platformsSkipped = 0;
 			foreach (var platform in _platforms)
 			{
-				if (platform.transform.position.z < touchedPlatform.transform.position.z)
-				{
-					PlatformSkipped?.Invoke();
-					MovePlatformToNextPosition(platform);
-				}
-			}
-		}
+				if (platform.transform.position.z >= touchedPlatform.transform.position.z) continue;
 
-		private void MovePlatformToNextPosition(Platform platform)
-		{
-			platform.TeleportTo(CalculateNextPlatformPosition());
+				platform.TeleportTo(CalculateNextPlatformPosition());
+				_furthestPlatform = platform;
+				platformsSkipped++;
+			}
 			
-			furthestPlatform = platform;
+			if (platformsSkipped > 0) PlatformsSkipped?.Invoke(platformsSkipped);
 		}
 
 		/// <summary>
-		/// Calculates the position for the next platform from the current furthest platform.
-		/// The position is calculated using the forward and hopping velocities from the physics settings, 
-		/// making it always possible to reach by player (in theory).
+		/// Calculates a new position from the furthest platform.
+		/// This position is always reachable by player (in theory).
 		/// </summary>
 		private Vector3 CalculateNextPlatformPosition()
 		{
@@ -91,45 +93,48 @@ namespace Platforms
 			// Clamp the Vector3 to prevent issues with floating point precision.
 			nextPosition = nextPosition.ClampUniform(-Constants.MAX_PLATFORM_DISTANCE, Constants.MAX_PLATFORM_DISTANCE);
 			
-			return furthestPlatform.transform.position + nextPosition;
+			return _furthestPlatform.transform.position + nextPosition;
 		}
 
+		/// <summary>
+		/// Calculates the maximum hop distance based on forward and hop velocities.
+		/// </summary>
 		private float MaxHopDistance()
 		{
 			// Calculate the forward and hopping velocities with progression factors.
-			var scoreWithOffset = GameManager.Instance.Score.Current + _platforms.Length - 1;
+			var game = Game.Instance;
+			var scoreWithOffset = game.Score.Current + _platforms.Length - 1;
 
-			var forwardMultiplier = _player.GetProgressionMultiplier(Player.Direction.Forward, scoreWithOffset);
-			var forwardVelocity = _physicsSettings.ForwardVelocity * forwardMultiplier;
+			var physicsSettings = Game.Instance.PhysicsSettings;
+			var forwardMultiplier = game.GetProgressionMultiplier(Game.Direction.Forward, scoreWithOffset);
+			var forwardVelocity = physicsSettings.ForwardVelocity * forwardMultiplier;
 
-			var verticalMultiplier = _player.GetProgressionMultiplier(Player.Direction.Vertical, scoreWithOffset);
-			var hopVelocity = _physicsSettings.HopVelocity * verticalMultiplier;
+			var verticalMultiplier = game.GetProgressionMultiplier(Game.Direction.Vertical, scoreWithOffset);
+			var hopVelocity = physicsSettings.HopVelocity * verticalMultiplier;
 
 			// The formula for maximum hop distance is "(2*f*h)/g", where f is forward velocity, h is hop velocity, and g is gravity.
 			// - Or so I hope, I'm learning stuff as I go.
-			return (2 * forwardVelocity * hopVelocity) / _physicsSettings.Gravity;
+			return (2 * forwardVelocity * hopVelocity) / physicsSettings.Gravity;
 		}
 
 		/// <summary>
 		/// Gets the height of the lowest platform.
 		/// </summary>
-		/// <returns>Returns the Y-value of the lowest platform world position.</returns>
 		public float GetTheLowestPlatformHeight()
 		{
-			if (_platforms.Length < 1) return 0f;
-			
-			var lowestHeight = _platforms.Min(platform => platform.transform.position.y);
-			
-			return lowestHeight;
+			return _platforms != null && _platforms.Length > 0 
+				? _platforms.Min(platform => platform.transform.position.y) 
+				: 0f;
 		}
 
 		/// <summary>
-		/// Moves the platforms back towards the origin.
+		/// Moves the platforms back towards the origin preventing issues with floating point accuracy.
+		/// - I doubt anyone will ever get this far without cheating.
 		/// </summary>
-		private void OnPlayerTooFar()
+		private void OnPlayerReachedMaxDistance()
 		{
 			foreach (var platform in _platforms) 
-				platform.transform.position -= _player.transform.position;
+				platform.transform.position -= Game.Instance.Player.transform.position;
 		}
 	}
 }
