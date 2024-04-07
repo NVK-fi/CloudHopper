@@ -19,9 +19,7 @@ namespace Audio
 
 		private bool _isAlive = true;
 		private float _timer;
-		
-		private float _highPitch;
-		private float _highVolume;
+
 		private float _normalPitch;
 		private float _normalVolume;
 
@@ -44,8 +42,6 @@ namespace Audio
 		{
 			_normalVolume = _audioSource.volume;
 			_normalPitch = _audioSource.pitch;
-			_highVolume = _normalVolume * volumeMultiplier;
-			_highPitch = _normalPitch * pitchMultiplier;
 
 			_diveVelocity = Game.Instance.PhysicsSettings.DiveVelocity;
 		}
@@ -89,8 +85,8 @@ namespace Audio
 			_previousInterpolation = newInterpolation;
 
 			// Finally, apply the new interpolation for a gradual change.
-			_audioSource.volume = Mathf.Lerp(_normalVolume, _highVolume, newInterpolation);
-			_audioSource.pitch = Mathf.Lerp(_normalPitch, _highPitch, newInterpolation);
+			_audioSource.volume = Mathf.Lerp(_normalVolume, _normalVolume * volumeMultiplier, newInterpolation);
+			_audioSource.pitch = Mathf.Lerp(_normalPitch, _normalPitch * pitchMultiplier, newInterpolation);
 		}
 	}
 }

@@ -7,7 +7,8 @@ namespace UI
 	using UnityEngine.UI;
 
 	/// <summary>
-	/// A slider that adjusts look sensitivity setting.
+	/// Represents a slider that adjusts look sensitivity setting.
+	/// Updates the value shown in the slider's handle.
 	/// </summary>
 	[RequireComponent(typeof(Scrollbar))]
 	public class SensitivitySlider : MonoBehaviour

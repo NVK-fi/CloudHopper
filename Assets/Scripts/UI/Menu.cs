@@ -4,9 +4,6 @@ namespace UI
 {
 	using System.Collections;
 	using Controls;
-	using Settings;
-	using TMPro;
-	using Tools;
 	using UnityEngine.InputSystem;
 	using UnityEngine.SceneManagement;
 
@@ -18,10 +15,6 @@ namespace UI
 	{
 		[SerializeField] private CanvasGroupFader canvasGroupFader;
 		[SerializeField] private ImageFader overlayFader;
-		[SerializeField] private TextMeshProUGUI lastScoreTextContainer;
-		[SerializeField] private TextMeshProUGUI highScoreTextContainer;
-		[SerializeField] private TextMeshProUGUI startButtonTextContainer;
-		[SerializeField] private string[] startButtonTexts;
 		[SerializeField] private ParticleSystem rainParticles;
 
 		private CanvasGroup _canvasGroup;
@@ -29,14 +22,6 @@ namespace UI
 		
 		private void Awake()
 		{
-			Time.timeScale = 1f;
-			
-			if (lastScoreTextContainer == null || highScoreTextContainer == null || startButtonTextContainer == null)
-			{
-				Debug.LogError("No text container set on " + this + "!");
-				enabled = false;
-			}
-
 			if (overlayFader == null || canvasGroupFader == null)
 			{
 				Debug.LogError("No fader set on " + this + "!");
@@ -53,40 +38,34 @@ namespace UI
 			_controls.UI.Cancel.performed += ExitGame;
 		}
 
-		private void OnDisable() => _controls.Disable();
-
-		private void Start()
+		private void OnDisable()
 		{
-			var lastScore = PlayerPrefs.GetInt(Constants.LAST_SCORE_KEY, 0); 
-			lastScoreTextContainer.text = "Last Score: " + lastScore;
-			
-			var highScore = PlayerPrefs.GetInt(Constants.HIGH_SCORE_KEY, 0);
-			highScoreTextContainer.text = "High Score: " + highScore;
-			
-			if (startButtonTexts.Length > 0)
-				startButtonTextContainer.text = startButtonTexts.PickRandom();
-
-			StartCoroutine(MenuAppearingCoroutine());
+			_controls.Disable();
+			_controls.UI.Cancel.performed -= ExitGame;
 		}
 
-		private IEnumerator MenuAppearingCoroutine()
+		private void Start() => StartCoroutine(MenuAppearingTransition());
+
+		private IEnumerator MenuAppearingTransition()
 		{
+			Time.timeScale = 1f;
+			
 			yield return overlayFader.FadeTo(0, .1f);
 			
 			_canvasGroup.interactable = true;
 			yield return canvasGroupFader.FadeTo(1, .5f);
 		}
 
-		public void PressStart() => StartCoroutine(GameStartCoroutine());
+		public void PressStart() => StartCoroutine(GameStartTransition());
 
-		private IEnumerator GameStartCoroutine()
+		private IEnumerator GameStartTransition()
 		{
-			var main = rainParticles.main;
-			main.startLifetime = 0.1f;
 			rainParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-			
+
+			_canvasGroup.interactable = false;
 			canvasGroupFader.StopAllCoroutines();
 			yield return canvasGroupFader.FadeTo(0, .3f);
+			
 			SceneManager.LoadScene(1);
 		}
 

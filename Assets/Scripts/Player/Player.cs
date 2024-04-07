@@ -9,7 +9,7 @@ namespace Player
 	using Settings;
 
 	/// <summary>
-	/// Represents a player in the game.
+	/// Represents the player in the game.
 	/// </summary>
 	[RequireComponent(typeof(CharacterController))]
 	public class Player : MonoBehaviour
@@ -24,11 +24,17 @@ namespace Player
 		/// </summary>
 		public Vector3 LocalVelocity { get; set; }
 
+		[SerializeField] private float fallLimit = 10f;
+		
 		private CharacterController _controller;
 		private bool _isColliderCooldownActive;
-		private float _deathHeight = -10f;
+		private float _deathHeight;
 
-		private void Awake() => _controller = GetComponent<CharacterController>();
+		private void Awake()
+		{
+			_controller = GetComponent<CharacterController>();
+			_deathHeight = -fallLimit;
+		}
 
 		private void LateUpdate()
 		{
@@ -39,7 +45,7 @@ namespace Player
 			if (transform.position.y < _deathHeight && LocalVelocity.y < 0) 
 				Death?.Invoke();
 		}
-
+		
 		private void OnControllerColliderHit(ControllerColliderHit hit)
 		{
 			if (_isColliderCooldownActive) return;
@@ -58,8 +64,8 @@ namespace Player
 				_controller.Move(-transform.position);
 			}
 			
-			// Update the DeathHeight from the lowest platform.
-			_deathHeight = Game.Instance.Platforms.GetTheLowestPlatformHeight() - 10f;
+			// Update the death height variable from the lowest platform in the scene.
+			_deathHeight = Game.Instance.Platforms.GetTheLowestPlatformHeight() - fallLimit;
 		}
 
 		/// <summary>

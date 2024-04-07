@@ -172,7 +172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a14e7c8d476b549aff39fcc7f6f707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  furthestPlatform: {fileID: 795970387}
 --- !u!1001 &267975767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -438,7 +437,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 30.5
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -500,7 +499,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 63
+      value: 62
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -535,17 +534,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
---- !u!114 &795970387 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7283137565901442997, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
-  m_PrefabInstance: {fileID: 795970386}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08a293e2c4e3671469c1ba5eb644128d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &795970388 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
@@ -1011,6 +999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f4ce7753f7d580429d776cd4ba25c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fallLimit: 10
 --- !u!114 &1939066612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1220,7 +1209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 15
+      value: 14.75
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1282,7 +1271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 46.5
+      value: 45.5
       objectReference: {fileID: 0}
     - target: {fileID: 6648183666810466965, guid: 584e6cd83668d6f419d77dae86a59df4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1397,8 +1386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aef4884e7905daf41aa1d9610329c4b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <ExitTransitionDuration>k__BackingField: 0.75
-  manualExitTransitionDuration: 0.25
+  deathExitDuration: 0.75
+  manualExitDuration: 0.25
   imageFader: {fileID: 1598769882}
 --- !u!108 &2111416052 stripped
 Light:

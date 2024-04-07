@@ -2,6 +2,7 @@ namespace Tools
 {
 	using UnityEngine;
     using System;
+	using Settings;
 
 	/// <summary>
 	/// Contains extension methods for various types.

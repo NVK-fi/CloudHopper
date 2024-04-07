@@ -7,7 +7,7 @@ namespace UI
 	using TMPro;
 
 	/// <summary>
-	/// Updates the game score on UI.
+	/// Updates the in-game score on UI.
 	/// </summary>
 	[RequireComponent(typeof(TextMeshProUGUI))]
 	public class GameScoreVisualizer : MonoBehaviour
@@ -48,6 +48,7 @@ namespace UI
 		{
 			// Start with the new size and then scale it back to normal over the set duration.
 			_textContainer.fontSize *= scale;
+			
 			var time = 0f;
 			while (time < duration)
 			{
@@ -55,6 +56,7 @@ namespace UI
 				yield return null;
 				time += Time.deltaTime;
 			}
+			
 			_textContainer.fontSize = _defaultFontSize;
 		}
 	}

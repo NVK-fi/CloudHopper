@@ -29,29 +29,38 @@ namespace Player
 
 		private void OnEnable()
 		{
-			Game.Instance.Controls.InGame.Dive.started += TryDive;
-			_player.TouchedPlatform += Hop;
+			_game.Controls.InGame.Dive.started += OnDivePressed;
+			_player.TouchedPlatform += OnPlayerTouchedPlatform;
 		}
 
 		private void OnDisable()
 		{
-			Game.Instance.Controls.InGame.Dive.started -= TryDive;
-			_player.TouchedPlatform -= Hop;
+			_game.Controls.InGame.Dive.started -= OnDivePressed;
+			_player.TouchedPlatform -= OnPlayerTouchedPlatform;
 		}
 
-		private void ApplyGravity() => _player.LocalVelocity += Vector3.down * (_physicsSettings.Gravity * Time.deltaTime);
+		private void OnPlayerTouchedPlatform(Platform _) => Hop();
 
-		private void Hop(Platform _)
+		private void OnDivePressed(InputAction.CallbackContext _) => TryDive();
+		
+		private void ApplyGravity()
 		{
-			var progressionMultiplier = _game.GetProgressionMultiplier(Game.Direction.Vertical, _game.Score.Current);
+			var gravity = Vector3.down * (_physicsSettings.Gravity * Time.deltaTime);
+
+			_player.LocalVelocity += gravity;
+		}
+
+		private void Hop()
+		{
+			var progressionMultiplier = _game.ProgressionSettings.VerticalMultiplier(_game.Score.Current);
 			var hopVelocity = _physicsSettings.HopVelocity * progressionMultiplier;
 			
 			_player.LocalVelocity = _player.LocalVelocity.With(y: hopVelocity);
 		}
 
-		private void TryDive(InputAction.CallbackContext _)
+		private void TryDive()
 		{
-			var progressionMultiplier = _game.GetProgressionMultiplier(Game.Direction.Vertical, _game.Score.Current);
+			var progressionMultiplier = _game.ProgressionSettings.VerticalMultiplier(_game.Score.Current);
 			var diveVelocity = _physicsSettings.DiveVelocity * progressionMultiplier;
 			var hopVelocity = _physicsSettings.HopVelocity * progressionMultiplier;
 			

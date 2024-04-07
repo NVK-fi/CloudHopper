@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c366f15cdccb22479ed1d6282ae2d4f, type: 3}
   m_Name: DefaultProgression
   m_EditorClassIdentifier: 
-  <ForwardVelocity>k__BackingField: 0.015
-  <VerticalVelocity>k__BackingField: 0.007
+  forwardIncrement: 0.015
+  verticalIncrement: 0.0065

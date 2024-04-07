@@ -25,7 +25,8 @@ namespace Player
 		private void UpdateForwardVelocity()
 		{
 			// Apply the progression factor to forward velocity. The player goes faster after each hop.
-			var progressionMultiplier = Game.Instance.GetProgressionMultiplier(Game.Direction.Forward, Game.Instance.Score.Current);
+			var score = Game.Instance.Score.Current;
+			var progressionMultiplier = Game.Instance.ProgressionSettings.ForwardMultiplier(score); 
 			var forwardVelocity = Game.Instance.PhysicsSettings.ForwardVelocity * progressionMultiplier;
 			
 			_player.LocalVelocity = _player.LocalVelocity.With(z: forwardVelocity);

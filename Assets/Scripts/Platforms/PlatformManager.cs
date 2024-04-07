@@ -9,6 +9,10 @@ namespace Platforms
 	using Tools;
 	using Random = Random;
 
+	/// <summary>
+	/// Serves as a parent class for individual Platforms,
+	/// and is responsible for handling their repositioning calculations.
+	/// </summary>
 	public class PlatformManager : MonoBehaviour
 	{
 		public event Action<int> PlatformsSkipped;
@@ -102,14 +106,14 @@ namespace Platforms
 		private float MaxHopDistance()
 		{
 			// Calculate the forward and hopping velocities with progression factors.
-			var game = Game.Instance;
-			var scoreWithOffset = game.Score.Current + _platforms.Length - 1;
-
+			var progressionSettings = Game.Instance.ProgressionSettings;
 			var physicsSettings = Game.Instance.PhysicsSettings;
-			var forwardMultiplier = game.GetProgressionMultiplier(Game.Direction.Forward, scoreWithOffset);
+			var scoreWithOffset = Game.Instance.Score.Current + _platforms.Length - 1;
+
+			var forwardMultiplier = progressionSettings.ForwardMultiplier(scoreWithOffset);
 			var forwardVelocity = physicsSettings.ForwardVelocity * forwardMultiplier;
 
-			var verticalMultiplier = game.GetProgressionMultiplier(Game.Direction.Vertical, scoreWithOffset);
+			var verticalMultiplier = progressionSettings.VerticalMultiplier(scoreWithOffset);
 			var hopVelocity = physicsSettings.HopVelocity * verticalMultiplier;
 
 			// The formula for maximum hop distance is "(2*f*h)/g", where f is forward velocity, h is hop velocity, and g is gravity.

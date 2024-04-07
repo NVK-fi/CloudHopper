@@ -16,7 +16,6 @@ namespace Player
 	{
 		[SerializeField] private Camera playerCamera;
 
-		private InputAsset _controls;
 		private float _cameraVerticalAngle;
 		private float _sensitivity;
 		
@@ -25,7 +24,6 @@ namespace Player
 		
 		private void Awake()
 		{
-			_controls = Game.Instance.Controls;
 			_cameraVerticalAngle = playerCamera.transform.localEulerAngles.x;
 
 			var sensitivityPower = PlayerPrefs.GetInt(Constants.SENSITIVITY_KEY, 5);
@@ -35,7 +33,7 @@ namespace Player
 		private void OnEnable()
 		{
 			ShowCursor(false);
-			_controls.InGame.Look.performed += OnLookPerformed;
+			Game.Instance.Controls.InGame.Look.performed += OnLookPerformed;
 
 			_inputBlockCoroutine = StartCoroutine(BlockInput(.5f));
 		}
@@ -43,7 +41,7 @@ namespace Player
 		private void OnDisable()
 		{
 			ShowCursor(true);
-			_controls.InGame.Look.performed -= OnLookPerformed;
+			Game.Instance.Controls.InGame.Look.performed -= OnLookPerformed;
 			
 			if (_inputBlockCoroutine != null)
 				StopCoroutine(_inputBlockCoroutine);

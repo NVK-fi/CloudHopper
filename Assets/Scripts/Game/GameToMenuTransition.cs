@@ -8,7 +8,7 @@ namespace Game
 	using UnityEngine.SceneManagement;
 
 	/// <summary>
-	/// Controls scene transitions from game to menu scene.
+	/// Controls scene transitions from game to menu.
 	/// </summary>
 	[RequireComponent(typeof(Game))]
 	public class GameToMenuTransition : MonoBehaviour
@@ -31,7 +31,7 @@ namespace Game
 
 		private void OnPlayerDeath() => StartCoroutine(FadeToMenu(deathExitDuration));
 
-		// This is called when the player presses escape.
+		// This is called when the player presses 'ESC'.
 		private void OnExitPerformed(InputAction.CallbackContext _) => StartCoroutine(FadeToMenu(manualExitDuration));
 		
 		private IEnumerator FadeToMenu(float duration)

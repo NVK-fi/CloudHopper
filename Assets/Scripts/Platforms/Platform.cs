@@ -5,7 +5,7 @@ namespace Platforms
 	using Random = Random;
 
 	/// <summary>
-	/// Represents a platform in the game.
+	/// Represents a single platform in the game.
 	/// </summary>
 	public class Platform : MonoBehaviour
 	{
